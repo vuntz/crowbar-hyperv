@@ -1,4 +1,4 @@
-raise if not node[:platform_family] == "windows"
+raise unless node[:platform_family] == "windows"
 
 component = node[:openstack][:nova][:name]
 service = node[:service][:nova][:name]

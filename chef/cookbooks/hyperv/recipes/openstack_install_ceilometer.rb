@@ -1,4 +1,4 @@
-raise if not node[:platform_family] == "windows"
+raise unless node[:platform_family] == "windows"
 
 component = node[:openstack][:ceilometer][:name]
 service = node[:service][:ceilometer][:name]
