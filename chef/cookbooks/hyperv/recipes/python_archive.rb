@@ -14,7 +14,7 @@ EOH
   not_if { ::File.exist?(node[:python][:installed]) }
 end
 
-unless registry_value_exist?("HKEY_LOCAL_MACHINE\\SOFTWARE\\Crowbar", {name: "PyWin32Registered", type: :string, data: "PyWin32 Registered"}, :machine)
+unless registry_value_exists?("HKEY_LOCAL_MACHINE\\SOFTWARE\\Crowbar", {name: "PyWin32Registered", type: :string, data: "PyWin32 Registered"}, :machine)
  #Register Python Win32 DLLs
  windows_batch "register_pywin32" do
    code <<-EOH
