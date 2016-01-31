@@ -56,7 +56,6 @@ end
 is_compute_agent = %w(ceilometer-agent-hyperv nova-multi-compute-hyperv).all?{ |role| node.roles.include?(role) }
 
 dirs = [
-  node[:openstack][:ceilometer][:config],
   node[:openstack][:ceilometer][:lock_path],
   node[:openstack][:ceilometer][:signing_dir]
 ]
