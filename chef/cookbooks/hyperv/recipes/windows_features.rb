@@ -3,10 +3,8 @@ raise unless node[:platform_family] == "windows"
 node.default[:windows][:allow_pending_reboots] = false
 
 if node[:target_platform] !~ /^hyperv/
-  unless node[:windows_features_installed].is_a? Array
-    node.set[:windows_features_installed] = []
-    node.save
-  end
+  node.set[:windows_features_installed] ||= []
+  feature_names = []
 
   node[:features_list][:windows].each do |feature_name, feature_attrs|
     next if node[:windows_features_installed].include? feature_name
@@ -17,9 +15,14 @@ if node[:target_platform] !~ /^hyperv/
       restart feature_attrs["restart"] || false
     end
 
-    ruby_block "set_windows_features_install_flag" do
-      block do
-        node.set[:windows_features_installed].push feature_name
+    feature_names.push(feature_name)
+  end
+
+  ruby_block "set_windows_features_install_flag" do
+    block do
+      unless feature_names.empty?
+        installed_features = node[:windows_features_installed] + feature_names
+        node.set[:windows_features_installed] = installed_features
         node.save
       end
     end
